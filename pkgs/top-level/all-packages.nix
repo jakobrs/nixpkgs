@@ -23521,6 +23521,12 @@ in
     libpng = libpng12;
   };
 
+  vvvvvv-bin = callPackage ../games/vvvvvv { };
+  vvvvvv = callPackage ../games/vvvvvv/wrapper.nix { };
+
+  vvvvvv-bin-full = vvvvvv-bin.override { fullGame = true; };
+  vvvvvv-full = vvvvvv.override { vvvvvv-bin = vvvvvv-bin-full; };
+
   warmux = callPackage ../games/warmux { };
 
   warsow-engine = callPackage ../games/warsow/engine.nix { };
