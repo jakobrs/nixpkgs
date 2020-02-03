@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, requireFile
+{ stdenv, fetchurl, fetchFromGitHub, requireFile, makeWrapper
 , SDL2, SDL2_mixer, cmake, ninja
 , fullGame ? false }:
 
@@ -17,6 +17,7 @@ let
   } else fetchurl {
     # the data file for the free Make and Play edition
     url = https://thelettervsixtim.es/makeandplay/data.zip;
+    name = "mapdata.zip";
     sha256 = "1q2pzscrglmwfgdl8yj300wymwskh51iq66l4xcd0qk0q3g3rbkg";
   };
 
@@ -36,7 +37,7 @@ in stdenv.mkDerivation rec {
   CFLAGS = flags;
   CXXFLAGS = flags;
 
-  nativeBuildInputs = [ cmake ninja ];
+  nativeBuildInputs = [ cmake ninja makeWrapper ];
   buildInputs = [ SDL2 SDL2_mixer ];
 
   sourceRoot = "source/desktop_version";
@@ -44,7 +45,7 @@ in stdenv.mkDerivation rec {
   installPhase = ''
     install -d $out/bin
     install -t $out/bin VVVVVV
-    install -T ${dataZip} $out/bin/data.zip
+    wrapProgram $out/bin/VVVVVV --add-flags "-assets ${dataZip}"
   '';
 
   meta = with stdenv.lib; {
