@@ -7587,7 +7587,7 @@ in
   zpaqd = callPackage ../tools/archivers/zpaq/zpaqd.nix { };
 
   zsh-autoenv = callPackage ../tools/misc/zsh-autoenv { };
-  
+
   zsh-bd = callPackage ../shells/zsh/zsh-bd { };
 
   zsh-git-prompt = callPackage ../shells/zsh/zsh-git-prompt { };
@@ -23521,12 +23521,11 @@ in
     libpng = libpng12;
   };
 
-  vvvvvvPackages = callPackages ../games/vvvvvv { };
-
-  inherit (vvvvvvPackages) vvvvvv-bin vvvvvv;
+  vvvvvv-bin = callPackage ../games/vvvvvv { };
+  vvvvvv = callPackage ../games/vvvvvv/wrapper.nix { };
 
   vvvvvv-bin-full = vvvvvv-bin.override { fullGame = true; };
-  vvvvvv-full = vvvvvv.override { fullGame = true; };
+  vvvvvv-full = vvvvvv.override { vvvvvv-bin = vvvvvv-bin-full; };
 
   warmux = callPackage ../games/warmux { };
 
