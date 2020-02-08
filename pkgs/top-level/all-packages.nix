@@ -23525,6 +23525,9 @@ in
 
   inherit (vvvvvvPackages) vvvvvv-bin vvvvvv;
 
+  vvvvvv-bin-full = vvvvvv-bin.override { fullGame = true; };
+  vvvvvv-full = vvvvvv.override { fullGame = true; };
+
   warmux = callPackage ../games/warmux { };
 
   warsow-engine = callPackage ../games/warsow/engine.nix { };
