@@ -23521,7 +23521,9 @@ in
     libpng = libpng12;
   };
 
-  vvvvvv = callPackage ../games/vvvvvv { };
+  vvvvvvPackages = callPackages ../games/vvvvvv { };
+
+  inherit (vvvvvvPackages) vvvvvv-bin vvvvvv;
 
   warmux = callPackage ../games/warmux { };
 

@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, requireFile, makeWrapper
+{ stdenv, stdenvNoCC, fetchurl, fetchFromGitHub, requireFile
 , SDL2, SDL2_mixer, cmake, ninja
 , fullGame ? false }:
 
@@ -23,40 +23,72 @@ let
 
   # if the user does not own the full game, build the Make and Play edition
   flags = if fullGame then [] else [ "-DMAKEANDPLAY" ];
-in stdenv.mkDerivation rec {
-  pname = "vvvvvv";
-  version = "unstable-2020-02-02";
 
-  src = fetchFromGitHub {
-    owner = "TerryCavanagh";
-    repo = "VVVVVV";
-    rev = "4bc76416f551253452012d28e2bc049087e2be73";
-    sha256 = "1sc64f7sxf063bdgnkg23vc170chq2ix25gs836hyswx98iyg5ly";
-  };
-
-  CFLAGS = flags;
-  CXXFLAGS = flags;
-
-  nativeBuildInputs = [ cmake ninja makeWrapper ];
-  buildInputs = [ SDL2 SDL2_mixer ];
-
-  sourceRoot = "source/desktop_version";
-
-  installPhase = ''
-    install -d $out/bin
-    install -t $out/bin VVVVVV
-    wrapProgram $out/bin/VVVVVV --add-flags "-assets ${dataZip}"
-  '';
-
-  meta = with stdenv.lib; {
-    description = "A retro-styled platform game";
-    longDescription = ''
-      VVVVVV is a platform game all about exploring one simple mechanical
-      idea - what if you reversed gravity instead of jumping?
+  vvvvvv-bin = stdenv.mkDerivation rec {
+    pname = "vvvvvv-bin";
+    version = "unstable-2020-02-02";
+  
+    src = fetchFromGitHub {
+      owner = "TerryCavanagh";
+      repo = "VVVVVV";
+      rev = "4bc76416f551253452012d28e2bc049087e2be73";
+      sha256 = "1sc64f7sxf063bdgnkg23vc170chq2ix25gs836hyswx98iyg5ly";
+    };
+  
+    CFLAGS = flags;
+    CXXFLAGS = flags;
+  
+    nativeBuildInputs = [ cmake ninja ];
+    buildInputs = [ SDL2 SDL2_mixer ];
+  
+    sourceRoot = "source/desktop_version";
+  
+    installPhase = ''
+      mkdir -p $out/bin
+      cp VVVVVV $out/bin/VVVVVV
     '';
-    homepage = "https://thelettervsixtim.es";
-    license = if fullGame then licenses.unfree else licenses.unfreeRedistributable;
-    maintainers = [ maintainers.dkudriavtsev ];
-    platforms = platforms.all;
+  
+    meta = with stdenv.lib; {
+      description = "A retro-styled platform game";
+      longDescription = ''
+        VVVVVV is a platform game all about exploring one simple mechanical
+        idea - what if you reversed gravity instead of jumping?
+      '';
+      homepage = "https://thelettervsixtim.es";
+      license = licenses.unfreeRedistributable;
+      maintainers = [ maintainers.dkudriavtsev ];
+      platforms = platforms.all;
+    };
   };
+
+  vvvvvv = stdenvNoCC.mkDerivation rec {
+    pname = "vvvvvv";
+    version = "unstable-2020-02-02";
+
+    dontUnpack = true;
+
+    installPhase = ''
+      mkdir -p $out/bin
+      cat > $out/bin/VVVVVV << EOF
+      #!/bin/sh
+      exec -a "\$0" ${vvvvvv-bin}/bin/VVVVVV -assets ${dataZip} "\$@"
+      EOF
+      chmod a+x $out/bin/VVVVVV
+    '';
+
+    meta = with stdenv.lib; {
+      description = "A retro-styled platform game";
+      longDescription = ''
+        VVVVVV is a platform game all about exploring one simple mechanical
+        idea - what if you reversed gravity instead of jumping?
+      '';
+      homepage = "https://thelettervsixtim.es";
+      license = if fullGame then licenses.unfree else licenses.unfreeRedistributable;
+      maintainers = [ maintainers.dkudriavtsev ];
+      platforms = platforms.all;
+    };
+  };
+
+in {
+  inherit vvvvvv-bin vvvvvv;
 }
