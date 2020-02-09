@@ -8,13 +8,13 @@ let
 
 in stdenv.mkDerivation rec {
   pname = "vvvvvv-bin";
-  version = "unstable-2020-02-02";
+  version = "unstable-2020-02-09";
 
   src = fetchFromGitHub {
     owner = "TerryCavanagh";
     repo = "VVVVVV";
-    rev = "4bc76416f551253452012d28e2bc049087e2be73";
-    sha256 = "1sc64f7sxf063bdgnkg23vc170chq2ix25gs836hyswx98iyg5ly";
+    rev = "9642921a6428dadd3193a9ff15805779858efd89";
+    sha256 = "0rbczh4psx9vlbylk6lhqk7c6agk0db4n9w9a0xi1dd04n1mipb5";
   };
 
   CFLAGS = flags;
