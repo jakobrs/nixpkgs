@@ -1,4 +1,4 @@
-{ stdenv, stdenvNoCC, fetchurl, fetchFromGitHub, requireFile
+{ stdenv, fetchurl, fetchFromGitHub, requireFile
 , SDL2, SDL2_mixer, cmake, ninja
 , fullGame ? false }:
 
