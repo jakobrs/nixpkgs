@@ -13,8 +13,8 @@ in stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "TerryCavanagh";
     repo = "VVVVVV";
-    rev = "9642921a6428dadd3193a9ff15805779858efd89";
-    sha256 = "0rbczh4psx9vlbylk6lhqk7c6agk0db4n9w9a0xi1dd04n1mipb5";
+    rev = "3273b4ab554c369311007212b4341ff8e3884b16";
+    sha256 = "0hfnc31sbrixrqb24g1x8vgkkgz6wabmw35j0dqd7k97qwjcb3k8";
   };
 
   CFLAGS = flags;
