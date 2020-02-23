@@ -112,6 +112,7 @@ autoPatchelfFile() {
     fi
 
     echo "searching for dependencies of $toPatch" >&2
+    echo "Previous RPATH: $(patchelf --print-rpath "$toPatch")" >&2
 
     # We're going to find all dependencies based on ldd output, so we need to
     # clear the RPATH first.
