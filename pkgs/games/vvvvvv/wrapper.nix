@@ -22,7 +22,7 @@ let
 
 in stdenvNoCC.mkDerivation rec {
   pname = "vvvvvv";
-  version = "unstable-2020-02-09";
+  version = "unstable-2020-03-13";
 
   dontUnpack = true;
 
