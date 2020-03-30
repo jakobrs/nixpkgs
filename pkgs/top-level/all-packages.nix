@@ -5414,6 +5414,8 @@ in
 
   pwsafe = callPackage ../applications/misc/pwsafe { };
 
+  n2n = callPackage ../tools/networking/n2n { };
+
   niff = callPackage ../tools/package-management/niff { };
 
   nifskope = libsForQt5.callPackage ../tools/graphics/nifskope { };
