@@ -9,7 +9,8 @@ rec {
   # Check whenever `b` depends on `a` as a fileSystem
   fsBefore = a: b: a.mountPoint == b.device
                 || hasPrefix "${a.mountPoint}${optionalString (!(hasSuffix "/" a.mountPoint)) "/"}" b.device
-                || hasPrefix "${a.mountPoint}${optionalString (!(hasSuffix "/" a.mountPoint)) "/"}" b.mountPoint;
+                || hasPrefix "${a.mountPoint}${optionalString (!(hasSuffix "/" a.mountPoint)) "/"}" b.mountPoint
+                || elem a.mountPoint b.depends;
 
   # Escape a path according to the systemd rules, e.g. /dev/xyzzy
   # becomes dev-xyzzy.  FIXME: slow.

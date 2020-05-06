@@ -56,6 +56,18 @@ let
         type = types.listOf nonEmptyStr;
       };
 
+      depends = mkOption {
+        default = [ ];
+        example = [ "/persist" ];
+        type = types.listOf nonEmptyStr;
+        description = ''
+          List of file systems that must be mounted before this one. Note that
+          you don't need to set this if 1. the .device of this file system lies
+          inside, or is the .mountPoint of the dependency, or 2. The .mountPoint
+          of this file system lies inside the .mountPoint of the depedency
+        '';
+      };
+
     };
 
     config = {
