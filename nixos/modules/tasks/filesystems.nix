@@ -56,6 +56,16 @@ let
         type = types.listOf nonEmptyStr;
       };
 
+      depends = mkOption {
+        default = [ ];
+        example = [ "/persist" ];
+        type = types.listOf nonEmptyStr;
+        description = ''
+          List of paths that must be mounted before this one. Note that you do
+          not need to add the value of .device or .mountPoint to this list.
+        '';
+      };
+
     };
 
     config = {

@@ -7,8 +7,20 @@ rec {
                      || elem fs.mountPoint [ "/" "/nix" "/nix/store" "/var" "/var/log" "/var/lib" "/etc" ];
 
   # Check whenever `b` depends on `a` as a fileSystem
-  fsBefore = a: b: a.mountPoint == b.device
-                || hasPrefix "${a.mountPoint}${optionalString (!(hasSuffix "/" a.mountPoint)) "/"}" b.mountPoint;
+  fsBefore = a: b:
+    let
+      normalisePath = path: "${path}${optionalString (!(hasSuffix "/" path)) "/"}";
+      normalise = mount: mount // { device = normalisePath mount.device;
+                                    mountPoint = normalisePath mount.mountPoint;
+                                    depends = map normalisePath mount.depends;
+                                  };
+
+      a' = normalise a;
+      b' = normalise b;
+
+    in hasPrefix a'.mountPoint b'.device
+    || hasPrefix a'.mountPoint b'.mountPoint
+    || any (dependency: hasPrefix a'.mountPoint dependency) b'.depends;
 
   # Escape a path according to the systemd rules, e.g. /dev/xyzzy
   # becomes dev-xyzzy.  FIXME: slow.
