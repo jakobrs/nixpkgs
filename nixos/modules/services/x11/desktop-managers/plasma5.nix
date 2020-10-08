@@ -191,11 +191,7 @@ in
         services.xserver.desktopManager.plasma5.enable = true;
       '';
 
-      services.xserver.desktopManager.session = singleton {
-        name = "plasma5";
-        bgSupport = true;
-        start = startplasma;
-      };
+      services.xserver.displayManager.sessionPackages = [ pkgs.libsForQt5.plasma5.plasma-workspace ];
 
       security.wrappers = {
         kcheckpass.source = "${lib.getBin libsForQt5.kscreenlocker}/libexec/kcheckpass";
@@ -375,5 +371,4 @@ in
       nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
     })
   ];
-
 }
